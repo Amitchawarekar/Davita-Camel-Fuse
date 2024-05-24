@@ -6,7 +6,7 @@ import org.apache.camel.model.dataformat.JsonLibrary;
 public class XMLConversionWithFileComponentRoute extends RouteBuilder {
 
 	public String sourceURI;
-	public String destinationURI;
+	public String filecomponentDestinationURI;
 	
 	public String getSourceURI() {
 		return sourceURI;
@@ -16,12 +16,12 @@ public class XMLConversionWithFileComponentRoute extends RouteBuilder {
 		this.sourceURI = sourceURI;
 	}
 
-	public String getDestinationURI() {
-		return destinationURI;
+	public String getFilecomponentDestinationURI() {
+		return filecomponentDestinationURI;
 	}
 
-	public void setDestinationURI(String destinationURI) {
-		this.destinationURI = destinationURI;
+	public void setFilecomponentDestinationURI(String filecomponentDestinationURI) {
+		this.filecomponentDestinationURI = filecomponentDestinationURI;
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class XMLConversionWithFileComponentRoute extends RouteBuilder {
 	    .log("Number of records in JSON: ${body.size()}")
 	    .marshal().jacksonxml(true)
 	    .log("Converted XML content: ${body}")
-	    .to(getDestinationURI())
+	    .to(getFilecomponentDestinationURI())
         .log("XML file saved to: data/output/WithFileComponent/PersonDetailsXML.xml");		
 	}
 }

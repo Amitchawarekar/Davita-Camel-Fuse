@@ -5,10 +5,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.citiustech</groupId>
-	<artifactId>Json-To-Xml-Conversion-Project</artifactId>
+	<artifactId>JsonToXMLConversion-Assgnment1</artifactId>
 	<version>6.0.1-SNAPSHOT</version>
 	<packaging>bundle</packaging>
-	<name>JsonToXMLConversion-Assgnment1</name>
+	<name>Json-To-Xml-Conversion-Project</name>
 	<description>Creating a route to convert json file into XML using file
 		component and processors</description>
 
@@ -139,9 +139,7 @@
 			<activation>
 				<jdk>[17,)</jdk>
 			</activation>
-
 			<dependencies>
-
 				<dependency>
 					<groupId>org.apache.camel</groupId>
 					<artifactId>camel-core</artifactId>

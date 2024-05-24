@@ -8,6 +8,16 @@ import com.citiustech.processor.SaveToXMLProcessor;
 
 
 public class XMLConversionWithProcessorRoute extends RouteBuilder {
+	
+	public String withoutfilecomponentDestinationURI;
+	
+	public String getWithoutfilecomponentDestinationURI() {
+		return withoutfilecomponentDestinationURI;
+	}
+
+	public void setWithoutfilecomponentDestinationURI(String withoutfilecomponentDestinationURI) {
+		this.withoutfilecomponentDestinationURI = withoutfilecomponentDestinationURI;
+	}
 
 	@Override
 	public void configure() throws Exception {
@@ -21,12 +31,7 @@ public class XMLConversionWithProcessorRoute extends RouteBuilder {
 		.log("Number of records in JSON: ${body.size()}")
 		.marshal().jacksonxml(true)
 		.log("Converted XML: ${body}")
-		.setHeader("FilePath").constant("data/output/WithoutFileComponent/PersonalDetailsXML.xml")
+		.setHeader("FilePath").constant(getWithoutfilecomponentDestinationURI())
 		.process(new SaveToXMLProcessor());
-		
-//		from("timer:foo?period=60000").bean(JsonImpl2FileReader.class, "readJson").unmarshal().json(JsonLibrary.Jackson)
-//				.log("JSON Content").log("${body}").log("Number of records in JSON: ${body.size()}").marshal()
-//				.jacksonxml(true).log("Converted XML: ${body}").log("${body}")
-//				.bean(JsonImpl2FileReader.class, "saveXMLtofile(${body},'data/output/Converted.xml')");
 	}
 }

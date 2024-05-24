@@ -1,14 +1,11 @@
 package com.citiustech.processor;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 
 public class SaveToXMLProcessor implements Processor {
-
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		// TODO Auto-generated method stub
