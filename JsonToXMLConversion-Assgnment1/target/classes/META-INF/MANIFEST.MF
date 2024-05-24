@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1716463762032
+Build-Jdk-Spec: 17
+Bundle-Blueprint: OSGI-INF/blueprint/json-to-xml-conversion-blueprint.xm
+ l
+Bundle-Description: Creating a route to convert json file into XML using
+  file		component and processors
+Bundle-ManifestVersion: 2
+Bundle-Name: Camel Content-Based Router Example[JsonToXMLConversion-Assg
+ nment1]
+Bundle-SymbolicName: JsonToXMLConversion-Assgnment1
+Bundle-Version: 6.0.1.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin 5.1.8
+Export-Package: com.citiustech.processor;version="6.0.1";uses:="org.apac
+ he.camel",com.citiustech.route;version="6.0.1";uses:="org.apache.camel.
+ builder"
+Import-Package: com.citiustech.processor;version="[6.0,7)",org.apache.ca
+ mel;version="[2.23,3)",org.apache.camel.builder;version="[2.23,3)",org.
+ apache.camel.model;version="[2.23,3)",org.apache.camel.model.dataformat
+ ;version="[2.23,3)",org.osgi.service.blueprint;version="[1.0.0,2.0.0)"
+Originally-Created-By: Apache Maven Bundle Plugin 5.1.8
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
+Tool: Bnd-6.3.1.202206071316
