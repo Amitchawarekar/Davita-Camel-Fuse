@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd       http://camel.apache.org/schema/blueprint https://camel.apache.org/schema/blueprint/camel-blueprint-2.23.3.xsd">
-	<!-- OSGI blueprint property placeholder -->
-	<cm:property-placeholder id="myblueprint.placeholder" persistent-id="camel.blueprint">
-		<cm:default-properties>
-			<cm:property name="sourceURI" value="file:data/input?noop=true" />
-			<cm:property name="filecomponentDestinationURI" value="file:data/output/WithFileComponent?fileName=PersonDetailsXML.xml" />
-			<cm:property name="withoutfilecomponentDestinationURI" value="data/output/WithoutFileComponent/PersonalDetailsXML.xml" />
-
-		</cm:default-properties>
-	</cm:property-placeholder>
-	
-	<bean class="com.citiustech.route.XMLConversionWithFileComponentRoute" id="xmlConversionWithFileComponentRoute">
-		<property name="sourceURI" value="${sourceURI}" />
-		<property name="filecomponentDestinationURI" value="${filecomponentDestinationURI}" />
-	</bean>
-	
-	<bean class="com.citiustech.route.XMLConversionWithProcessorRoute" id="xmlConversionWithProcessorRoute">
-
-		<property name="withoutfilecomponentDestinationURI" value="${withoutfilecomponentDestinationURI}" />
-	</bean>
-	
-	<camelContext id="cbr-example-context" xmlns="http://camel.apache.org/schema/blueprint">
-		<routeBuilder ref="xmlConversionWithFileComponentRoute" />
-		<!-- <routeBuilder ref="xmlConversionWithProcessorRoute"/> -->
-	</camelContext>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+    xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd       http://camel.apache.org/schema/blueprint https://camel.apache.org/schema/blueprint/camel-blueprint-2.23.3.xsd">
+    <cm:property-placeholder id="myblueprint.placeholder" persistent-id="camel.blueprint">
+        <cm:default-properties>
+            <cm:property name="sourceURI" value="file:src/main/resources/data/input?noop=true"/>
+            <cm:property name="jsonFileSourceURI" value="src/main/resources/data/input/TestJSON.json" />
+            <cm:property name="filecomponentDestinationURI" value="file:src/main/resources/data/output/WithFileComponent?fileName=PersonDetailsXML.xml"/>
+            <cm:property name="withoutfilecomponentDestinationURI" value="file:src/main/resources/data/output/WithoutFileComponent?fileName=PersonalDetailsXML.xml"/>
+        </cm:default-properties>
+    </cm:property-placeholder>
+    <bean
+        class="com.citiustech.routes.XMLConversionWithFileComponentRoute" id="xmlConversionWithFileComponentRoute">
+        <property name="sourceURI" value="${sourceURI}"/>
+        <property name="filecomponentDestinationURI" value="${filecomponentDestinationURI}"/>
+    </bean>
+    <bean class="com.citiustech.routes.XMLConversionWithProcessorRoute" id="xmlConversionWithProcessorRoute">
+        <property name="withoutfilecomponentDestinationURI" value="${withoutfilecomponentDestinationURI}"/>
+    </bean>
+    <camelContext id="cbr-example-context" xmlns="http://camel.apache.org/schema/blueprint">
+        <routeBuilder ref="xmlConversionWithFileComponentRoute"/>
+        <!-- <routeBuilder ref="xmlConversionWithProcessorRoute"/> -->
+    </camelContext>
 </blueprint>

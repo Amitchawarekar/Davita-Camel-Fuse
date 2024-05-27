@@ -1,10 +1,10 @@
-package com.citiustech.route;
+package com.citiustech.routes;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
 
-import com.citiustech.processor.ReadJsonFileProcessor;
-import com.citiustech.processor.SaveToXMLProcessor;
+import com.citiustech.processors.ReadJsonFileProcessor;
+import com.citiustech.processors.SaveToXMLProcessor;
 
 
 public class XMLConversionWithProcessorRoute extends RouteBuilder {

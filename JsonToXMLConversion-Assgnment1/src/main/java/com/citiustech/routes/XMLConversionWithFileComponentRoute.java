@@ -1,4 +1,4 @@
-package com.citiustech.route;
+package com.citiustech.routes;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;

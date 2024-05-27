@@ -1,4 +1,4 @@
-package com.citiustech.processor;
+package com.citiustech.processors;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,11 +9,20 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 
 public class ReadJsonFileProcessor implements Processor {
-		
+	
+	public String jsonFileSourceURI;
+
+	public String getJsonFileSourceURI() {
+		return jsonFileSourceURI;
+	}
+	public void setJsonFileSourceURI(String jsonFileSourceURI) {
+		this.jsonFileSourceURI = jsonFileSourceURI;
+	}
+
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		// TODO Auto-generated method stub
-		File file = new File("data/input/TestJSON.json");
+		File file = new File(getJsonFileSourceURI());
 		if (!file.exists()) {
 			exchange.getIn().setBody("File Not Found");
 		}
