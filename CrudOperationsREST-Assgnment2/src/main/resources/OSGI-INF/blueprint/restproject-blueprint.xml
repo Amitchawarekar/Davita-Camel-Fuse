@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd       http://camel.apache.org/schema/blueprint https://camel.apache.org/schema/blueprint/camel-blueprint-2.23.3.xsd">
+	<!-- OSGI blueprint property placeholder -->
+	<cm:property-placeholder id="myblueprint.placeholder" persistent-id="camel.blueprint">
+		<cm:default-properties>
+			<cm:property name="allPatientSqlQuery" value="select * from patients" />
+			<cm:property name="patientByIdSQlQuery" value="sql:SELECT * FROM Patients.patients WHERE id = :#id?dataSource=#mysqlDataSource&amp;outputType=SelectOne" />
+			<cm:property name="addPatientSqlQuery" value="sql:INSERT INTO patients(id, firstName, lastName, address) VALUES (:#id, :#firstName, :#lastName, :#address)" />
+			<cm:property name="deletePatientSqlQuery" value="sql:DELETE FROM patients WHERE id = :#id" />
+			<cm:property name="updatePatientSqlQuery" value="sql:UPDATE patients SET firstName = :#firstName, lastName= :#lastName, address = :#address WHERE id = :#id?dataSource=#mysqlDataSource" />
+			<cm:property name="updatePatientAddressSqlQuery" value="sql:UPDATE patients SET address = :#address WHERE id = :#id?dataSource=#mysqlDataSource" />
+			
+		</cm:default-properties>
+	</cm:property-placeholder>
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="mysqlDataSource">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/Patients" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+	</bean>
+	<bean class="com.citiustech.restprojects.routes.PatientCrudRoute" id="patientCrudRoute">
+		<property name="allPatientSqlQuery" value="${allPatientSqlQuery}" />
+		<property name="patientByIdSQlQuery" value="${patientByIdSQlQuery}" />
+		<property name="addPatientSqlQuery" value="${addPatientSqlQuery}" />
+		<property name="deletePatientSqlQuery" value="${deletePatientSqlQuery}" />
+		<property name="updatePatientSqlQuery" value="${updatePatientSqlQuery}" />
+		<property name="updatePatientAddressSqlQuery" value="${updatePatientAddressSqlQuery}" />
+	</bean>
+
+	<bean class="com.citiustech.restprojects.routes.RestRoute" id="restRoute"></bean>
+
+
+	<camelContext id="cbr-example-context" xmlns="http://camel.apache.org/schema/blueprint">
+		<!--<routeBuilder ref="patientCrudRoute" />-->
+		<routeBuilder ref="restRoute"/>
+		<!-- 
+			<route id="_route1">
+            <from id="_from1" uri="direct:start"/>
+            <process id="_process1" ref="basicAuthProcessor"/>
+        </route>
+		-->
+	</camelContext>
+</blueprint>
