@@ -6,6 +6,8 @@ public class patient_nurses {
 	public String patient_id;
 	public String nurse_id;
 	public String assignment_date;
+	
+	
 	public String getPatient_nurse_id() {
 		return patient_nurse_id;
 	}
