@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+    xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="              http://www.osgi.org/xmlns/blueprint/v1.0.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd              http://camel.apache.org/schema/blueprint https://camel.apache.org/schema/blueprint/camel-blueprint-2.23.3.xsd">
-    <bean
+    
+    <cm:property-placeholder id="myblueprint.placeholder" persistent-id="camel.blueprint">
+        <cm:default-properties>
+            <cm:property name="patientIdsSourceUri" value="file:src/main/resources/data/inbound?noop=true&amp;fileName=patientIds.txt"/>
+            <cm:property name="patientreportDetailsSqlQuery" value="sql:SELECT p.patient_id, p.first_name, p.last_name, p.date_of_birth, p.gender, p.address, p.phone_number, p.email,d.diagnosis_date, d.diagnosis_details,e.equipment_name, e.usage_details,n.first_name AS nurse_first_name, n.last_name AS nurse_last_name, n.contact_number AS nurse_contact_number, n.email AS nurse_email, pn.assignment_date, pn.end_date FROM Patients p LEFT JOIN Diagnoses d ON p.patient_id = d.patient_id LEFT JOIN Equipment e ON p.patient_id = e.patient_id LEFT JOIN Patient_Nurses pn ON p.patient_id = pn.patient_id LEFT JOIN Nurses n ON pn.nurse_id = n.nurse_id WHERE p.patient_id = :#id?outputType=SelectOne"/>
+        </cm:default-properties>
+    </cm:property-placeholder>
+
+<bean
         class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="mysqlDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/patients_assgn3"/>
         <property name="username" value="root"/>
         <property name="password" value="root"/>
     </bean>
-    <bean class="com.citiustech.routes.GetPatientReportDetailsRoute" id="getPatientReportDetailsRoute"/>
-    <bean class="com.citiustech.routes.InboundRestRoute" id="inboundRestRoute"/>
+
+    <bean class="com.citiustech.routes.GetPatientReportDetailsRoute" id="getPatientReportDetailsRoute">
+		
+		<property name="patientIdsSourceUri" value="${patientIdsSourceUri}" />
+
+    </bean>
+    <bean class="com.citiustech.routes.InboundRestRoute" id="inboundRestRoute">
+		<property name="patientreportDetailsSqlQuery" value="${patientreportDetailsSqlQuery}"></property>    
+</bean>
     <camelContext id="cbr-example-context" xmlns="http://camel.apache.org/schema/blueprint">
         <routeBuilder ref="getPatientReportDetailsRoute"/>
         <routeBuilder ref="inboundRestRoute"/>
