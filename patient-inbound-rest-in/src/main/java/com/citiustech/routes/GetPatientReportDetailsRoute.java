@@ -12,6 +12,7 @@ import com.citiustech.exceptions.PatientNotFoundException;
 public class GetPatientReportDetailsRoute extends RouteBuilder {
 	
 	public String patientIdsSourceUri;
+	public String httpUri;
 	public String getPatientIdsSourceUri() {
 		return patientIdsSourceUri;
 	}
@@ -19,6 +20,12 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 		this.patientIdsSourceUri = patientIdsSourceUri;
 	}
 	
+	public String getHttpUri() {
+		return httpUri;
+	}
+	public void setHttpUri(String httpUri) {
+		this.httpUri = httpUri;
+	}
 	@Override
 	public void configure() throws Exception {
 		
@@ -55,12 +62,11 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 		//setting http method
 		.setHeader(Exchange.HTTP_METHOD,constant("GET"))
 		//setting http uri
-		.setHeader(Exchange.HTTP_URI, simple("http://localhost:8081/patient/"+"${header.patientId}"))
-		
+		.setHeader(Exchange.HTTP_PATH, simple("${header.patientId}"))
 		//Requesting the REST API for the data
 		.log("Requesting : http://localhost:8081/patient/"+"${header.patientId}")
-		.to("http://localhost:8081/patient/"+"${header.patientId}")
-
+		.to(getHttpUri())
+//		.log("${body}");
 		//Sending it ActivemQ Server
 		.to("activemq:queue:patientDetailsQueue");
 	
