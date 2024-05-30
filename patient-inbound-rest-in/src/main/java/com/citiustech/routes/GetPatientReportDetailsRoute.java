@@ -62,10 +62,10 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 		//setting http method
 		.setHeader(Exchange.HTTP_METHOD,constant("GET"))
 		//setting http uri
-		.setHeader(Exchange.HTTP_PATH, simple("${header.patientId}"))
+		.setHeader(Exchange.HTTP_URI, simple("http://localhost:8081/patient/"+"${header.patientId}"))
 		//Requesting the REST API for the data
 		.log("Requesting : http://localhost:8081/patient/"+"${header.patientId}")
-		.to(getHttpUri())
+		.to("http://localhost:8081/patient/"+"${header.patientId}")
 //		.log("${body}");
 		//Sending it ActivemQ Server
 		.to("activemq:queue:patientDetailsQueue");

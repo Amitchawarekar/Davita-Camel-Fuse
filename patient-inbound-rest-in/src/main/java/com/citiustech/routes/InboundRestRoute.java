@@ -27,8 +27,7 @@ public class InboundRestRoute extends RouteBuilder {
 		
 		//Rest route for retrieving patient report details
 		from("direct:getPatientReportDetails")
-		.to(getPatientreportDetailsSqlQuery())
-		.log("${body}");
+		.to("sql:select * from Patients where patientId = :#id?outputType=SelectOne");
 	}
 
 }

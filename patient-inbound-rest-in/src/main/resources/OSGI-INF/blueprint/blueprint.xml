@@ -5,21 +5,24 @@
     <cm:property-placeholder id="myblueprint.placeholder" persistent-id="camel.blueprint">
         <cm:default-properties>
             <cm:property name="patientIdsSourceUri" value="file:src/main/resources/data/inbound?noop=true&amp;fileName=patientIds.txt"/>
-            <cm:property name="httpUri" value="http://localhost:8082/data/treatment/" />
         </cm:default-properties>
     </cm:property-placeholder>
     <bean
         class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="mysqlDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/patients_assgn3"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/camel_assgn3"/>
         <property name="username" value="root"/>
         <property name="password" value="root"/>
     </bean>
     <bean class="com.citiustech.routes.GetPatientReportDetailsRoute" id="getPatientReportDetailsRoute">
         <property name="patientIdsSourceUri" value="${patientIdsSourceUri}"/>
-        <property name="httpUri" value="${httpUri}"/>
     </bean>
+
+	<bean class="com.citiustech.routes.InboundRestRoute" id="inboundRestRoute">
+		
+	</bean>
     <camelContext id="cbr-example-context" xmlns="http://camel.apache.org/schema/blueprint">
         <routeBuilder ref="getPatientReportDetailsRoute"/>
+        <routeBuilder ref="inboundRestRoute"/>
     </camelContext>
 </blueprint>
