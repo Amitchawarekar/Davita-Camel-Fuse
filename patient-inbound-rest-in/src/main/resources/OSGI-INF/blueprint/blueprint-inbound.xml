@@ -17,10 +17,7 @@
     <bean class="com.citiustech.routes.GetPatientReportDetailsRoute" id="getPatientReportDetailsRoute">
         <property name="patientIdsSourceUri" value="${patientIdsSourceUri}"/>
     </bean>
-
-	<bean class="com.citiustech.routes.InboundRestRoute" id="inboundRestRoute">
-		
-	</bean>
+    <bean class="com.citiustech.routes.InboundRestRoute" id="inboundRestRoute"/>
     <camelContext id="cbr-example-context" xmlns="http://camel.apache.org/schema/blueprint">
         <routeBuilder ref="getPatientReportDetailsRoute"/>
         <routeBuilder ref="inboundRestRoute"/>
