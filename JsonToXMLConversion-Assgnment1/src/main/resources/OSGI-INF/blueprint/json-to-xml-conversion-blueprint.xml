@@ -5,7 +5,7 @@
     <cm:property-placeholder id="myblueprint.placeholder" persistent-id="camel.blueprint">
         <cm:default-properties>
             <cm:property name="sourceURI" value="file:src/main/resources/data/input?noop=true"/>
-            <cm:property name="jsonFileSourceURI" value="src/main/resources/data/input/TestJSON.json" />
+            <cm:property name="jsonFileSourceURI" value="src/main/resources/data/input/TestJSON.json"/>
             <cm:property name="filecomponentDestinationURI" value="file:src/main/resources/data/output/WithFileComponent?fileName=PersonDetailsXML.xml"/>
             <cm:property name="withoutfilecomponentDestinationURI" value="file:src/main/resources/data/output/WithoutFileComponent?fileName=PersonalDetailsXML.xml"/>
         </cm:default-properties>
@@ -18,7 +18,7 @@
     <bean class="com.citiustech.routes.XMLConversionWithProcessorRoute" id="xmlConversionWithProcessorRoute">
         <property name="withoutfilecomponentDestinationURI" value="${withoutfilecomponentDestinationURI}"/>
     </bean>
-    <camelContext id="cbr-example-context" xmlns="http://camel.apache.org/schema/blueprint">
+    <camelContext id="json-to-xml-context" xmlns="http://camel.apache.org/schema/blueprint">
         <routeBuilder ref="xmlConversionWithFileComponentRoute"/>
         <!-- <routeBuilder ref="xmlConversionWithProcessorRoute"/> -->
     </camelContext>
