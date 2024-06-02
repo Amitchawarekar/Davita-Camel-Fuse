@@ -5,7 +5,6 @@ import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
 
-import com.citiustech.exceptions.ActiveMQException;
 import com.citiustech.exceptions.PatientNotFoundException;
 
 
@@ -13,6 +12,8 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 	
 	public String patientIdsSourceUri;
 	public String httpUri;
+	public String AMQQueue;
+	
 	public String getPatientIdsSourceUri() {
 		return patientIdsSourceUri;
 	}
@@ -26,6 +27,14 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 	public void setHttpUri(String httpUri) {
 		this.httpUri = httpUri;
 	}
+	
+	public String getAMQQueue() {
+		return AMQQueue;
+	}
+	public void setAMQQueue(String aMQQueue) {
+		AMQQueue = aMQQueue;
+	}
+	
 	@Override
 	public void configure() throws Exception {
 		
@@ -35,10 +44,6 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 		.log("Patient Not Found : ${exception.message}")
 		.to("log:patientNotFound");
 		
-		onException(ActiveMQException.class)
-		.handled(true)
-		.log("ActiveMQ error : ${exception.message}")
-		.to("log:ActiveMQError");
 		
 		onException(Exception.class)
 		.handled(true)
@@ -61,21 +66,14 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 		
 		//setting http method
 		.setHeader(Exchange.HTTP_METHOD,constant("GET"))
-		//setting http uri
-		.setHeader(Exchange.HTTP_URI, simple("http://localhost:8081/patient/"+"${header.patientId}"))
+		//setting Http path 
+		.setHeader(Exchange.HTTP_PATH, simple("${header.patientId}"))
 		//Requesting the REST API for the data
-		.log("Requesting : http://localhost:8081/patient/"+"${header.patientId}")
-		.to("http://localhost:8081/patient/"+"${header.patientId}")
+		.log("Requesting :" + getHttpUri())
+		.to(getHttpUri())
 //		.log("${body}");
 		//Sending it ActivemQ Server
-		.to("activemq:queue:patientDetailsQueue");
-	
-	
-//	    from("timer://test-rest-api?period=1000")
-//		    .log("Rest API IS CALLING")
-//		    .setHeader(Exchange.HTTP_METHOD, simple("GET"))
-//		    .to("http://localhost:8081/patient/1001")
-//		    .log("${body}");
+		.to(getAMQQueue());
 	}
 	
 

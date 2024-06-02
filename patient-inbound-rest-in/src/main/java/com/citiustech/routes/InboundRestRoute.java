@@ -5,13 +5,25 @@ import org.apache.camel.model.rest.RestBindingMode;
 
 public class InboundRestRoute extends RouteBuilder {
 	
-	public String patientreportDetailsSqlQuery;
-	public String getPatientreportDetailsSqlQuery() {
-		return patientreportDetailsSqlQuery;
+	public String patientReportDetailsQueue;
+	public String allPatientsSqlQuery;
+	
+	
+	public String getPatientReportDetailsQueue() {
+		return patientReportDetailsQueue;
 	}
-	public void setPatientreportDetailsSqlQuery(String patientreportDetailsSqlQuery) {
-		this.patientreportDetailsSqlQuery = patientreportDetailsSqlQuery;
+	public void setPatientReportDetailsQueue(String patientReportDetailsQueue) {
+		this.patientReportDetailsQueue = patientReportDetailsQueue;
 	}
+
+	public String getAllPatientsSqlQuery() {
+		return allPatientsSqlQuery;
+	}
+
+	public void setAllPatientsSqlQuery(String allPatientsSqlQuery) {
+		this.allPatientsSqlQuery = allPatientsSqlQuery;
+	}
+
 	@Override
 	public void configure() throws Exception {
 		
@@ -22,12 +34,12 @@ public class InboundRestRoute extends RouteBuilder {
 				.bindingMode(RestBindingMode.json);
 		
 		//Rest endpoint
-		rest("/patient").get("/{id}").to("direct:getPatientReportDetails");
+		rest("/patient").get("/{id}").to(getPatientReportDetailsQueue());
 		
 		
 		//Rest route for retrieving patient report details
-		from("direct:getPatientReportDetails")
-		.to("sql:select * from Patients where patientId = :#id?outputType=SelectOne");
+		from(getPatientReportDetailsQueue())
+		.to(getAllPatientsSqlQuery() + "?outputType=SelectOne");
 	}
 
 }
