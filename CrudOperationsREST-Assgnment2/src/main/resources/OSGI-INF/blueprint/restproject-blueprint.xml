@@ -11,6 +11,12 @@
             <cm:property name="deletePatientSqlQuery" value="sql:DELETE FROM patients WHERE id = :#id"/>
             <cm:property name="updatePatientSqlQuery" value="sql:UPDATE patients SET firstName = :#firstName, lastName= :#lastName, address = :#address WHERE id = :#id?dataSource=#mysqlDataSource"/>
             <cm:property name="updatePatientAddressSqlQuery" value="sql:UPDATE patients SET address = :#address WHERE id = :#id?dataSource=#mysqlDataSource"/>
+        	<cm:property name="allPatientsDirect" value="direct:getAllPatients"/>
+        	<cm:property name="patientByIdDirect" value="direct:getPatientById"/>
+        	<cm:property name="addPatientDirect" value="direct:addPatient"/>
+        	<cm:property name="deletePatientDirect" value="direct:deletePatient"/>
+        	<cm:property name="putPatientDirect" value="direct:putPatient"/>
+        	<cm:property name="updatePatientAddressDirect" value="direct:updatePatientAddress"/>
         </cm:default-properties>
     </cm:property-placeholder>
     <bean
@@ -27,16 +33,25 @@
         <property name="deletePatientSqlQuery" value="${deletePatientSqlQuery}"/>
         <property name="updatePatientSqlQuery" value="${updatePatientSqlQuery}"/>
         <property name="updatePatientAddressSqlQuery" value="${updatePatientAddressSqlQuery}"/>
+        <property name="allPatientsDirect" value="${allPatientsDirect}"/>
+        <property name="patientByIdDirect" value="${patientByIdDirect}"/>
+        <property name="addPatientDirect" value="${addPatientDirect}"/>
+        <property name="deletePatientDirect" value="${deletePatientDirect}"/>
+        <property name="putPatientDirect" value="${putPatientDirect}"/>
+        <property name="updatePatientAddressDirect" value="${updatePatientAddressDirect}"/>
+        
     </bean>
-    <bean class="com.citiustech.restprojects.routes.RestRoute" id="restRoute"/>
-    <camelContext id="cbr-example-context" xmlns="http://camel.apache.org/schema/blueprint">
-        <!--<routeBuilder ref="patientCrudRoute" />-->
+    <bean class="com.citiustech.restprojects.routes.RestRoute" id="restRoute">
+		<property name="allPatientsDirect" value="${allPatientsDirect}"/>
+        <property name="patientByIdDirect" value="${patientByIdDirect}"/>
+        <property name="addPatientDirect" value="${addPatientDirect}"/>
+        <property name="deletePatientDirect" value="${deletePatientDirect}"/>
+        <property name="putPatientDirect" value="${putPatientDirect}"/>
+        <property name="updatePatientAddressDirect" value="${updatePatientAddressDirect}"/>
+	
+	</bean>
+    <camelContext id="rest-camelContext" xmlns="http://camel.apache.org/schema/blueprint">
+        <routeBuilder ref="patientCrudRoute"/>
         <routeBuilder ref="restRoute"/>
-        <!-- 
-			<route id="_route1">
-            <from id="_from1" uri="direct:start"/>
-            <process id="_process1" ref="basicAuthProcessor"/>
-        </route>
-		-->
     </camelContext>
 </blueprint>

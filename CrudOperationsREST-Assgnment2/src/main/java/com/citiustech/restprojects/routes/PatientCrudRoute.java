@@ -16,6 +16,15 @@ public class PatientCrudRoute extends RouteBuilder {
 	public String updatePatientSqlQuery;
 	public String updatePatientAddressSqlQuery;
 	
+	
+	public String AllPatientsDirect;
+	public String patientByIdDirect;
+	public String addPatientDirect;
+	public String deletePatientDirect;
+	public String putPatientDirect;
+	public String updatePatientAddressDirect;
+	
+	
 
 	public String getAllPatientSqlQuery() {
 		return allPatientSqlQuery;
@@ -53,13 +62,50 @@ public class PatientCrudRoute extends RouteBuilder {
 	public void setUpdatePatientAddressSqlQuery(String updatePatientAddressSqlQuery) {
 		this.updatePatientAddressSqlQuery = updatePatientAddressSqlQuery;
 	}
-
+	
+	
+	public String getAllPatientsDirect() {
+		return AllPatientsDirect;
+	}
+	public void setAllPatientsDirect(String allPatientsDirect) {
+		AllPatientsDirect = allPatientsDirect;
+	}
+	public String getPatientByIdDirect() {
+		return patientByIdDirect;
+	}
+	public void setPatientByIdDirect(String patientByIdDirect) {
+		this.patientByIdDirect = patientByIdDirect;
+	}
+	public String getAddPatientDirect() {
+		return addPatientDirect;
+	}
+	public void setAddPatientDirect(String addPatientDirect) {
+		this.addPatientDirect = addPatientDirect;
+	}
+	public String getDeletePatientDirect() {
+		return deletePatientDirect;
+	}
+	public void setDeletePatientDirect(String deletePatientDirect) {
+		this.deletePatientDirect = deletePatientDirect;
+	}
+	public String getPutPatientDirect() {
+		return putPatientDirect;
+	}
+	public void setPutPatientDirect(String putPatientDirect) {
+		this.putPatientDirect = putPatientDirect;
+	}
+	public String getUpdatePatientAddressDirect() {
+		return updatePatientAddressDirect;
+	}
+	public void setUpdatePatientAddressDirect(String updatePatientAddressDirect) {
+		this.updatePatientAddressDirect = updatePatientAddressDirect;
+	}
 	@Override
 	public void configure() throws Exception {
 		
 		
 		//get All patients using JDBC Component
-		from("direct:getAllPatients").log("${header.Authorization}")
+		from(getAllPatientsDirect()).log("${header.Authorization}")
 		.process(new BasicAuthProcessor())
 		.choice()
 		.when(header("SuccessfulAuthorization").isEqualTo(true))
@@ -71,7 +117,7 @@ public class PatientCrudRoute extends RouteBuilder {
 		.setBody(simple("Invalid Login"));
 			
 		//get PatientByID using SQL component
-		from("direct:getPatientById")
+		from(getPatientByIdDirect())
 		.process(new BasicAuthProcessor())
 		.choice()
 		.when(header("SuccessfulAuthorization").isEqualTo(true))
@@ -82,7 +128,7 @@ public class PatientCrudRoute extends RouteBuilder {
 		.setBody(simple("Invalid Login"));
 		
 		//add patient 
-		from("direct:addPatient")
+		from(getAddPatientDirect())
 		.process(new BasicAuthProcessor())
 		.choice()
 		.when(header("SuccessfulAuthorization").isEqualTo(true))
@@ -92,7 +138,7 @@ public class PatientCrudRoute extends RouteBuilder {
 		.setBody(simple("Invalid Login"));
 		
 		//delete patient
-		from("direct:deletePatient")
+		from(getDeletePatientDirect())
 		.process(new BasicAuthProcessor())
 		.choice()
 		.when(header("SuccessfulAuthorization").isEqualTo(true))
@@ -103,7 +149,7 @@ public class PatientCrudRoute extends RouteBuilder {
 		.setBody(simple("Invalid Login"));
 		
 		//put patient
-		from("direct:putPatient")
+		from(getPutPatientDirect())
 		.process(new BasicAuthProcessor())
 		.choice()
 		.when(header("SuccessfulAuthorization").isEqualTo(true))
@@ -114,7 +160,7 @@ public class PatientCrudRoute extends RouteBuilder {
 			.setBody(simple("Invalid Login"));
 		
 		// patch patient
-		from("direct:updatePatientAddress")
+		from(getUpdatePatientAddressDirect())
 		.process(new BasicAuthProcessor())
 		.choice()
 		.when(header("SuccessfulAuthorization").isEqualTo(true))
