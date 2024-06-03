@@ -14,6 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class PatientTransformationRoute extends RouteBuilder {
 
 	public String transformedJson;
+	public String patientDetailsQueue;
+	public String patientXlateTopic;
 
 	public String getTransformedJson() {
 		return transformedJson;
@@ -22,21 +24,32 @@ public class PatientTransformationRoute extends RouteBuilder {
 	public void setTransformedJson(String transformedJson) {
 		this.transformedJson = transformedJson;
 	}
+	
+	
 
+	public String getPatientDetailsQueue() {
+		return patientDetailsQueue;
+	}
+
+	public void setPatientDetailsQueue(String patientDetailsQueue) {
+		this.patientDetailsQueue = patientDetailsQueue;
+	}
+
+	public String getPatientXlateTopic() {
+		return patientXlateTopic;
+	}
+
+	public void setPatientXlateTopic(String patientXlateTopic) {
+		this.patientXlateTopic = patientXlateTopic;
+	}
 
 	@Override
 	public void configure() throws Exception {
-		System.out.println(getTransformedJson());
 
-        from("activemq:queue:patientDetailsQueue")
-        .unmarshal().json(JsonLibrary.Jackson)
-        .setBody(simple(getTransformedJson()))
-        .to("activemq:queue:patientXlateQueue");
-
-
-
-
-
-}
+		from(getPatientDetailsQueue())
+		.unmarshal().json(JsonLibrary.Jackson)
+		.setBody(simple(getTransformedJson()))
+		.to(getPatientXlateTopic());
+	}
 
 }
