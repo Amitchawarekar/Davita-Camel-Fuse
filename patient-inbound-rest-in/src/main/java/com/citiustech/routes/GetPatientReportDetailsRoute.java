@@ -1,12 +1,13 @@
 package com.citiustech.routes;
 
+import java.io.FileNotFoundException;
+import java.net.ConnectException;
+import org.apache.activemq.ConnectionFailedException;
 import org.apache.camel.Exchange;
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.model.rest.RestBindingMode;
-
-import com.citiustech.exceptions.PatientNotFoundException;
-
+import org.apache.camel.http.common.HttpOperationFailedException;
 
 public class GetPatientReportDetailsRoute extends RouteBuilder {
 	
@@ -39,17 +40,42 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 	public void configure() throws Exception {
 		
 		//Exception Handling
-		onException(PatientNotFoundException.class)
+		
+		//Http Invocation Exception
+		onException(HttpOperationFailedException.class)
 		.handled(true)
-		.log("Patient Not Found : ${exception.message}")
-		.to("log:patientNotFound");
+		.log("Exception Occured : Http Request Failed!")
+		.maximumRedeliveries(3)
+		.retryAttemptedLogLevel(LoggingLevel.ERROR);
 		
 		
+		//ActiveMQ connection Exception
+		onException(ConnectionFailedException.class)
+		.handled(true)
+		.log("ActiveMQ Connection Failed : ${exception.message}")
+		.maximumRedeliveries(3)
+		.maximumRedeliveryDelay("1000")
+		.retryAttemptedLogLevel(LoggingLevel.ERROR);
+		
+		
+		//File Not Found Exception
+		onException(FileNotFoundException.class)
+		.handled(true)
+		.log("File Not Exist : ${exception.message}")
+		.retryAttemptedLogLevel(LoggingLevel.INFO);
+		
+		
+		//Rest Api Exception
+		onException(ConnectException.class)
+		.handled(true)
+		.log("Rest Api Call Failed : ${exception.message}")
+		.retryAttemptedLogLevel(LoggingLevel.ERROR);
+		
+		
+		//Default Error Handler
 		onException(Exception.class)
 		.handled(true)
-		.log("Exception occurred: ${exception.message}");
-		
-		
+		.log("Exception occurred: ${exception.message}");			
 		
 		//tokenizing and triming the incoming patientIds from the file 
 		from(getPatientIdsSourceUri())

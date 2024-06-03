@@ -29,6 +29,6 @@
     </bean>
     <camelContext id="inbound-context" xmlns="http://camel.apache.org/schema/blueprint">
         <routeBuilder ref="getPatientReportDetailsRoute"/>
-        <routeBuilder ref="inboundRestRoute"/>
+        <routeBuilder ref="inboundRestRoute"/> 
     </camelContext>
 </blueprint>
