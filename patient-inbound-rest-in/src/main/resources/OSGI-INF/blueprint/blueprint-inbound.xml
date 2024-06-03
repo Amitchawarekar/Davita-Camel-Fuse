@@ -6,9 +6,9 @@
         <cm:default-properties>
             <cm:property name="patientIdsSourceUri" value="file:src/main/resources/data/inbound?noop=true&amp;fileName=patientIds.txt"/>
             <cm:property name="httpUri" value="http://localhost:8081/patient/"/>
-            <cm:property name="AMQQueue" value="activemq:queue:patientDetailsQueue" />
-            <cm:property name="patientReportDetailsQueue" value="direct:getPatientReportDetails" />
-            <cm:property name="allPatientsSqlQuery" value="sql:select * from Patients where patientId = :#id" />
+            <cm:property name="AMQQueue" value="activemq:queue:patientDetailsQueue"/>
+            <cm:property name="patientReportDetailsQueue" value="direct:getPatientReportDetails"/>
+            <cm:property name="allPatientsSqlQuery" value="sql:select * from Patients where patientId = :#id"/>
         </cm:default-properties>
     </cm:property-placeholder>
     <bean
@@ -24,10 +24,9 @@
         <property name="AMQQueue" value="${AMQQueue}"/>
     </bean>
     <bean class="com.citiustech.routes.InboundRestRoute" id="inboundRestRoute">
-		<property name="patientReportDetailsQueue" value="${patientReportDetailsQueue}" />
-		<property name="allPatientsSqlQuery" value="${allPatientsSqlQuery}" />
-		
-	</bean>
+        <property name="patientReportDetailsQueue" value="${patientReportDetailsQueue}"/>
+        <property name="allPatientsSqlQuery" value="${allPatientsSqlQuery}"/>
+    </bean>
     <camelContext id="inbound-context" xmlns="http://camel.apache.org/schema/blueprint">
         <routeBuilder ref="getPatientReportDetailsRoute"/>
         <routeBuilder ref="inboundRestRoute"/>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+    xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="              http://www.osgi.org/xmlns/blueprint/v1.0.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd              http://camel.apache.org/schema/blueprint https://camel.apache.org/schema/blueprint/camel-blueprint-2.23.3.xsd">
+    <cm:property-placeholder id="myblueprint.placeholder" persistent-id="camel.blueprint">
+        <cm:default-properties>
+            <cm:property name="patientXlateTopic" value="activemq:topic:patientXlateTopic"/>
+            <cm:property name="databaseEquipmentFlagUpdateDirect" value="direct:DatabaseEquipmentFlagUpdate"/>
+            <cm:property name="equipmentflagActiveSqlQuery" value="sql: update patients set EquipmentStatus= &quot;Inuse&quot; where PatientId= :#PatientId" />
+            <cm:property name="equipmentflagInactiveSqlQuery" value="sql: update patients set EquipmentStatus= &quot;Free&quot; where PatientId= :#PatientId" />
+        </cm:default-properties>
+    </cm:property-placeholder>
+    <bean
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="mysqlDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/camel_assgn3"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+    </bean>
+    <bean class="com.citiustech.routes.EquipmentFlagUpdateRoute" id="equipmentFlagUpdateRoute">
+        <property name="patientXlateTopic" value="${patientXlateTopic}"/>
+        <property name="databaseEquipmentFlagUpdateDirect" value="${databaseEquipmentFlagUpdateDirect}"/>
+        <property name="equipmentflagActiveSqlQuery" value="${equipmentflagActiveSqlQuery}"/>
+        <property name="equipmentflagInactiveSqlQuery" value="${equipmentflagInactiveSqlQuery}"/>
+    </bean>
+    <camelContext id="outbound-database-context" xmlns="http://camel.apache.org/schema/blueprint">
+        <routeBuilder ref="equipmentFlagUpdateRoute"/>
+    </camelContext>
+</blueprint>
