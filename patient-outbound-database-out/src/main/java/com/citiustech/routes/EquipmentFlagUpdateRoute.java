@@ -1,7 +1,10 @@
 package com.citiustech.routes;
 
+import java.sql.SQLException;
 import java.util.LinkedHashMap;
 
+import org.apache.activemq.ConnectionFailedException;
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
 
@@ -47,6 +50,28 @@ public class EquipmentFlagUpdateRoute  extends RouteBuilder{
 	
 	@Override
 	public void configure() throws Exception {
+		
+		//error Handling
+		// ActiveMQ connection Exception
+		onException(ConnectionFailedException.class)
+		.handled(true)
+		.log("ActiveMQ Connection Failed : ${exception.message}")
+		.maximumRedeliveries(3)
+		.maximumRedeliveryDelay("1000")
+		.retryAttemptedLogLevel(LoggingLevel.WARN);
+		
+		//SQL Exception 
+		onException(SQLException.class)
+		.handled(true)
+		.log("SQL Exception occurred: ${exception.message}");		
+				
+		//Default Error Handler
+		onException(Exception.class)
+		.handled(true)
+		.log("Exception occurred: ${exception.message}");	
+		
+		
+		//Getting data from ActiveMQ topic
 		from(getPatientXlateTopic())
 		.unmarshal().json(JsonLibrary.Jackson,LinkedHashMap.class)
 		.log("Data: ${body} ")
@@ -63,7 +88,6 @@ public class EquipmentFlagUpdateRoute  extends RouteBuilder{
 		 		.to(getEquipmentflagActiveSqlQuery())
 		.otherwise()
 				.to(getEquipmentflagInactiveSqlQuery());
-
 	}
 
 }

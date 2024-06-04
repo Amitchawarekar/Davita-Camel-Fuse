@@ -2,6 +2,8 @@ package com.citiustech.routes;
 
 import java.io.FileNotFoundException;
 import java.net.ConnectException;
+import java.sql.SQLException;
+
 import org.apache.activemq.ConnectionFailedException;
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
@@ -44,9 +46,9 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 		//Http Invocation Exception
 		onException(HttpOperationFailedException.class)
 		.handled(true)
-		.log("Exception Occured : Http Request Failed!")
+		.log("Http Request Failed : ${exception.message}")
 		.maximumRedeliveries(3)
-		.retryAttemptedLogLevel(LoggingLevel.ERROR);
+		.retryAttemptedLogLevel(LoggingLevel.WARN);
 		
 		
 		//ActiveMQ connection Exception
@@ -55,27 +57,36 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 		.log("ActiveMQ Connection Failed : ${exception.message}")
 		.maximumRedeliveries(3)
 		.maximumRedeliveryDelay("1000")
-		.retryAttemptedLogLevel(LoggingLevel.ERROR);
+		.retryAttemptedLogLevel(LoggingLevel.WARN);
 		
 		
 		//File Not Found Exception
 		onException(FileNotFoundException.class)
 		.handled(true)
 		.log("File Not Exist : ${exception.message}")
-		.retryAttemptedLogLevel(LoggingLevel.INFO);
+		.retryAttemptedLogLevel(LoggingLevel.WARN);
 		
 		
 		//Rest Api Exception
 		onException(ConnectException.class)
 		.handled(true)
 		.log("Rest Api Call Failed : ${exception.message}")
-		.retryAttemptedLogLevel(LoggingLevel.ERROR);
+		.maximumRedeliveries(3)
+		.maximumRedeliveryDelay("1000")
+		.retryAttemptedLogLevel(LoggingLevel.WARN);
+		
+		
+		//SQL Exception 
+		onException(SQLException.class)
+		.handled(true)
+		.log("SQL Exception occurred: ${exception.message}");		
+				
 		
 		
 		//Default Error Handler
 		onException(Exception.class)
 		.handled(true)
-		.log("Exception occurred: ${exception.message}");			
+		.log("Exception occurred: ${exception.message}");		
 		
 		//tokenizing and triming the incoming patientIds from the file 
 		from(getPatientIdsSourceUri())

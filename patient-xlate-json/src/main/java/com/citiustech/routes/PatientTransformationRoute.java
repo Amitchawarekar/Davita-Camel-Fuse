@@ -1,6 +1,8 @@
 package com.citiustech.routes;
 
+import org.apache.activemq.ConnectionFailedException;
 import org.apache.camel.Exchange;
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.json.simple.JsonObject;
@@ -45,7 +47,23 @@ public class PatientTransformationRoute extends RouteBuilder {
 
 	@Override
 	public void configure() throws Exception {
+		//Exception Handling
+		//ActiveMQ connection Exception
+		onException(ConnectionFailedException.class)
+		.handled(true)
+		.log("ActiveMQ Connection Failed : ${exception.message}")
+		.maximumRedeliveries(3)
+		.maximumRedeliveryDelay("1000")
+		.retryAttemptedLogLevel(LoggingLevel.ERROR);
+		
 
+		//Default Error Handler
+		onException(Exception.class)
+		.handled(true)
+		.log("Exception occurred: ${exception.message}");			
+		
+		
+		//Transformation Route
 		from(getPatientDetailsQueue())
 		.unmarshal().json(JsonLibrary.Jackson)
 		.setBody(simple(getTransformedJson()))
