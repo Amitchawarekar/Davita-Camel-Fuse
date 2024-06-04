@@ -73,21 +73,24 @@ public class EquipmentFlagUpdateRoute  extends RouteBuilder{
 		
 		//Getting data from ActiveMQ topic
 		from(getPatientXlateTopic())
+		.log(LoggingLevel.INFO,"Patient Data Received from activeMQ topic")
 		.unmarshal().json(JsonLibrary.Jackson,LinkedHashMap.class)
-		.log("Data: ${body} ")
+		.log("Patient Data: ${body} ")
         .to(getDatabaseEquipmentFlagUpdateDirect());
 
 		//database Update route for changing Equipment Status
 		from(getDatabaseEquipmentFlagUpdateDirect())
-		.log("Equipment Status update in database route")
 			.setHeader("PatientStatus",simple("${body[PatientTreatmentDetails][DiagnosisDetails][PatientStatus]}"))
 			.setHeader("PatientId",simple("${body[PatientDemographicDetails][PatientId]}"))
-			.log("header.PatientStatus")
-		.choice()
+			.choice()
 		 	.when(header("PatientStatus").isEqualTo("Active"))
 		 		.to(getEquipmentflagActiveSqlQuery())
-		.otherwise()
-				.to(getEquipmentflagInactiveSqlQuery());
+			.otherwise()
+				.to(getEquipmentflagInactiveSqlQuery())
+				.end()
+			.log(LoggingLevel.INFO,"Equipment Flag got updated according to the Patient Status")
+;
+			
 	}
 
 }

@@ -59,13 +59,16 @@ public class ActiveMQRoute extends RouteBuilder {
 
 		// Route to send Diagnosis data to topic as backup
 		from(getPatientXlateTopic())
-		.unmarshal()
-		.json(JsonLibrary.Jackson, LinkedHashMap.class)
-		.log("Data received after Xslate: ${body} ").to(getPatientDiagnosisBackupDirect());
+		.log(LoggingLevel.INFO,"Patient Data received from ActiveMQ topic")
+		.unmarshal().json(JsonLibrary.Jackson, LinkedHashMap.class)
+		.log("Patient Data received : ${body} ")
+		.to(getPatientDiagnosisBackupDirect());
 
 		from(getPatientDiagnosisBackupDirect())
-		.log("Patient Diagnosis Data Backup Route")
-		.process(new DiagnosisBackupProcessor()).marshal().json(JsonLibrary.Jackson)
-		.to(getPatientDiagnosisDetailsTopic());
+		.process(new DiagnosisBackupProcessor())
+		.log(LoggingLevel.INFO,"Patient Data is processed and diagnosis data is fetched with patientId")
+		.marshal().json(JsonLibrary.Jackson)
+		.to(getPatientDiagnosisDetailsTopic())
+		.log(LoggingLevel.INFO,"Patient Diagnosis Data is sent to activeMQ topic as backup - ${body}");
 	}
 }

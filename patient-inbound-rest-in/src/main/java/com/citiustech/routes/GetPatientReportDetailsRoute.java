@@ -96,21 +96,21 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 			@Override
 			public void process(Exchange exchange) throws Exception {
 				String body = exchange.getIn().getBody(String.class);
-				System.out.println(body);
 				exchange.getIn().setHeader("patientId", body);
 			}
 		})
-		
-		//setting http method
+		.log(LoggingLevel.INFO,"Received patientId from the file - ${body}")
+
 		.setHeader(Exchange.HTTP_METHOD,constant("GET"))
-		//setting Http path 
 		.setHeader(Exchange.HTTP_PATH, simple("${header.patientId}"))
 		//Requesting the REST API for the data
-		.log("Requesting :" + getHttpUri())
+		.log(LoggingLevel.INFO,"Requesting :" + getHttpUri() + "${header.patientId}")
+		.log(LoggingLevel.INFO,"Patient Data received from rest api")
 		.to(getHttpUri())
-//		.log("${body}");
 		//Sending it ActivemQ Server
-		.to(getAMQQueue());
+		.to(getAMQQueue())
+		.log(LoggingLevel.INFO,"Patient Data sent to ActiveMQ queue");
+
 	}
 	
 

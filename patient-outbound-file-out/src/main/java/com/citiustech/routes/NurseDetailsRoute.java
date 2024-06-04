@@ -77,13 +77,14 @@ public class NurseDetailsRoute extends RouteBuilder {
 		
 		//Getting data from topic
 		from(getPatientXlateTopic())
+		.log(LoggingLevel.INFO,"Patient Data received from activeMQ topic")
 		.unmarshal().json(JsonLibrary.Jackson,LinkedHashMap.class)
-		.log("Data from Xlate: ${body} ")
+		.log(LoggingLevel.INFO,"Patient Data - ${body} ")
         .to(getNurseStatusDetailsDirect());
  
 		//Nurse Detail To File Route
 		from(getNurseStatusDetailsDirect())
-		.log("Sending Active and Inactive Nurses to appropriate file route")
+		.log(LoggingLevel.INFO,"Sending Active and Inactive Nurses to appropriate file route")
 		.setHeader("PatientStatus",simple("${body[PatientTreatmentDetails][DiagnosisDetails][PatientStatus]}"))
 		.setHeader("PatientId",simple("${body[PatientDemographicDetails][PatientId]}"))
 		.setHeader("CamelFileName",simple("NurseId-" +"${body[PatientTreatmentDetails][nursedetails][NurseId]}"))
@@ -93,7 +94,8 @@ public class NurseDetailsRoute extends RouteBuilder {
 	 	.when(header("PatientStatus").isEqualTo("Active"))
 	 			.to(getActiveNurseFilePath())
 	 		.otherwise()
-	 			.to(getInactiveNurseFilePath());
+	 			.to(getInactiveNurseFilePath())
+	 			.end();
 	}
 
 }
