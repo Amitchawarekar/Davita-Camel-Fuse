@@ -1,10 +1,8 @@
 package com.citiustech.routes;
-
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
 
 public class InboundRestRoute extends RouteBuilder {
-	
 	public String patientReportDetailsQueue;
 	public String allPatientsSqlQuery;
 	
@@ -14,11 +12,9 @@ public class InboundRestRoute extends RouteBuilder {
 	public void setPatientReportDetailsQueue(String patientReportDetailsQueue) {
 		this.patientReportDetailsQueue = patientReportDetailsQueue;
 	}
-
 	public String getAllPatientsSqlQuery() {
 		return allPatientsSqlQuery;
 	}
-
 	public void setAllPatientsSqlQuery(String allPatientsSqlQuery) {
 		this.allPatientsSqlQuery = allPatientsSqlQuery;
 	}

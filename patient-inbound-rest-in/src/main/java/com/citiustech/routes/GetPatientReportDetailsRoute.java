@@ -1,9 +1,7 @@
 package com.citiustech.routes;
-
 import java.io.FileNotFoundException;
 import java.net.ConnectException;
 import java.sql.SQLException;
-
 import org.apache.activemq.ConnectionFailedException;
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
@@ -12,7 +10,6 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.http.common.HttpOperationFailedException;
 
 public class GetPatientReportDetailsRoute extends RouteBuilder {
-	
 	public String patientIdsSourceUri;
 	public String httpUri;
 	public String amqQueue;
@@ -23,14 +20,12 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 	public void setPatientIdsSourceUri(String patientIdsSourceUri) {
 		this.patientIdsSourceUri = patientIdsSourceUri;
 	}
-	
 	public String getHttpUri() {
 		return httpUri;
 	}
 	public void setHttpUri(String httpUri) {
 		this.httpUri = httpUri;
 	}
-	
 	public String getAmqQueue() {
 		return amqQueue;
 	}

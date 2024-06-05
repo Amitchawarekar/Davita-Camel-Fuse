@@ -1,9 +1,7 @@
 package com.citiustech.routes;
-
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
-
 import org.apache.activemq.ConnectionFailedException;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;

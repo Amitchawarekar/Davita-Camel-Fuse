@@ -1,7 +1,5 @@
 package com.citiustech.processors;
-
 import java.util.LinkedHashMap;
-
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 

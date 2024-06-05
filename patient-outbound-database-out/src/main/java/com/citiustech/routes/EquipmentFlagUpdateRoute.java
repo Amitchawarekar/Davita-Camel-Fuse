@@ -1,8 +1,6 @@
 package com.citiustech.routes;
-
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
-
 import org.apache.activemq.ConnectionFailedException;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
@@ -71,14 +69,14 @@ public class EquipmentFlagUpdateRoute  extends RouteBuilder{
 
 		//database Update route for changing Equipment Status
 		from(getDatabaseEquipmentFlagUpdateDirect())
-			.setHeader("PatientStatus",simple("${body[PatientTreatmentDetails][DiagnosisDetails][PatientStatus]}"))
-			.setHeader("PatientId",simple("${body[PatientDemographicDetails][PatientId]}"))
-			.choice()
-		 	.when(header("PatientStatus").isEqualTo("Active"))
-		 	.to(getEquipmentflagActiveSqlQuery())
-			.otherwise()
-			.to(getEquipmentflagInactiveSqlQuery())
-			.end()
-			.log(LoggingLevel.INFO,"Equipment Flag got updated according to the Patient Status");		
+		.setHeader("PatientStatus",simple("${body[PatientTreatmentDetails][DiagnosisDetails][PatientStatus]}"))
+		.setHeader("PatientId",simple("${body[PatientDemographicDetails][PatientId]}"))
+		.choice()
+		.when(header("PatientStatus").isEqualTo("Active"))
+		.to(getEquipmentflagActiveSqlQuery())
+		.otherwise()
+		.to(getEquipmentflagInactiveSqlQuery())
+		.end()
+		.log(LoggingLevel.INFO,"Equipment Flag got updated according to the Patient Status");		
 	}
 }

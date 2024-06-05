@@ -1,14 +1,11 @@
 package com.citiustech.routes;
-
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import org.apache.activemq.ConnectionFailedException;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
-
 import com.citiustech.processors.DiagnosisBackupProcessor;
 
 public class ActiveMQRoute extends RouteBuilder {
