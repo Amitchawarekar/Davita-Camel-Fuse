@@ -14,36 +14,28 @@ public class EquipmentFlagUpdateRoute  extends RouteBuilder{
 	public String equipmentflagActiveSqlQuery;
 	public String patientXlateTopic;
 	public String databaseEquipmentFlagUpdateDirect;
-	
-	
+		
 	public String getEquipmentflagInactiveSqlQuery() {
 		return equipmentflagInactiveSqlQuery;
 	}
-
 	public void setEquipmentflagInactiveSqlQuery(String equipmentflagInactiveSqlQuery) {
 		this.equipmentflagInactiveSqlQuery = equipmentflagInactiveSqlQuery;
 	}
-
 	public String getEquipmentflagActiveSqlQuery() {
 		return equipmentflagActiveSqlQuery;
 	}
-
 	public void setEquipmentflagActiveSqlQuery(String equipmentflagActiveSqlQuery) {
 		this.equipmentflagActiveSqlQuery = equipmentflagActiveSqlQuery;
 	}
-
 	public String getPatientXlateTopic() {
 		return patientXlateTopic;
 	}
-
 	public void setPatientXlateTopic(String patientXlateTopic) {
 		this.patientXlateTopic = patientXlateTopic;
 	}
-
 	public String getDatabaseEquipmentFlagUpdateDirect() {
 		return databaseEquipmentFlagUpdateDirect;
 	}
-
 	public void setDatabaseEquipmentFlagUpdateDirect(String databaseEquipmentFlagUpdateDirect) {
 		this.databaseEquipmentFlagUpdateDirect = databaseEquipmentFlagUpdateDirect;
 	}
@@ -69,8 +61,7 @@ public class EquipmentFlagUpdateRoute  extends RouteBuilder{
 		onException(Exception.class)
 		.handled(true)
 		.log("Exception occurred: ${exception.message}");	
-		
-		
+			
 		//Getting data from ActiveMQ topic
 		from(getPatientXlateTopic())
 		.log(LoggingLevel.INFO,"Patient Data Received from activeMQ topic")
@@ -84,13 +75,10 @@ public class EquipmentFlagUpdateRoute  extends RouteBuilder{
 			.setHeader("PatientId",simple("${body[PatientDemographicDetails][PatientId]}"))
 			.choice()
 		 	.when(header("PatientStatus").isEqualTo("Active"))
-		 		.to(getEquipmentflagActiveSqlQuery())
+		 	.to(getEquipmentflagActiveSqlQuery())
 			.otherwise()
-				.to(getEquipmentflagInactiveSqlQuery())
-				.end()
-			.log(LoggingLevel.INFO,"Equipment Flag got updated according to the Patient Status")
-;
-			
+			.to(getEquipmentflagInactiveSqlQuery())
+			.end()
+			.log(LoggingLevel.INFO,"Equipment Flag got updated according to the Patient Status");		
 	}
-
 }

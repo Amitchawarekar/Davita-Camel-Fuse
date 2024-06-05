@@ -15,7 +15,7 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 	
 	public String patientIdsSourceUri;
 	public String httpUri;
-	public String AMQQueue;
+	public String amqQueue;
 	
 	public String getPatientIdsSourceUri() {
 		return patientIdsSourceUri;
@@ -31,25 +31,22 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 		this.httpUri = httpUri;
 	}
 	
-	public String getAMQQueue() {
-		return AMQQueue;
+	public String getAmqQueue() {
+		return amqQueue;
 	}
-	public void setAMQQueue(String aMQQueue) {
-		AMQQueue = aMQQueue;
+	public void setAmqQueue(String amqQueue) {
+		this.amqQueue = amqQueue;
 	}
-	
 	@Override
 	public void configure() throws Exception {
 		
 		//Exception Handling
-		
 		//Http Invocation Exception
 		onException(HttpOperationFailedException.class)
 		.handled(true)
 		.log("Http Request Failed : ${exception.message}")
 		.maximumRedeliveries(3)
 		.retryAttemptedLogLevel(LoggingLevel.WARN);
-		
 		
 		//ActiveMQ connection Exception
 		onException(ConnectionFailedException.class)
@@ -59,13 +56,11 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 		.maximumRedeliveryDelay("1000")
 		.retryAttemptedLogLevel(LoggingLevel.WARN);
 		
-		
 		//File Not Found Exception
 		onException(FileNotFoundException.class)
 		.handled(true)
 		.log("File Not Exist : ${exception.message}")
 		.retryAttemptedLogLevel(LoggingLevel.WARN);
-		
 		
 		//Rest Api Exception
 		onException(ConnectException.class)
@@ -81,8 +76,6 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 		.handled(true)
 		.log("SQL Exception occurred: ${exception.message}");		
 				
-		
-		
 		//Default Error Handler
 		onException(Exception.class)
 		.handled(true)
@@ -95,12 +88,11 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 		.process(new Processor() {
 			@Override
 			public void process(Exchange exchange) throws Exception {
-				String body = exchange.getIn().getBody(String.class);
-				exchange.getIn().setHeader("patientId", body);
+				String input_body = exchange.getIn().getBody(String.class);
+				exchange.getIn().setHeader("patientId", input_body);
 			}
 		})
 		.log(LoggingLevel.INFO,"Received patientId from the file - ${body}")
-
 		.setHeader(Exchange.HTTP_METHOD,constant("GET"))
 		.setHeader(Exchange.HTTP_PATH, simple("${header.patientId}"))
 		//Requesting the REST API for the data
@@ -108,10 +100,7 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 		.log(LoggingLevel.INFO,"Patient Data received from rest api")
 		.to(getHttpUri())
 		//Sending it ActivemQ Server
-		.to(getAMQQueue())
+		.to(getAmqQueue())
 		.log(LoggingLevel.INFO,"Patient Data sent to ActiveMQ queue");
-
 	}
-	
-
 }

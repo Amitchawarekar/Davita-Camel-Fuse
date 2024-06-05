@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class PatientTransformationRoute extends RouteBuilder {
-
+	
 	public String transformedJson;
 	public String patientDetailsQueue;
 	public String patientXlateTopic;
@@ -22,23 +22,18 @@ public class PatientTransformationRoute extends RouteBuilder {
 	public String getTransformedJson() {
 		return transformedJson;
 	}
-
 	public void setTransformedJson(String transformedJson) {
 		this.transformedJson = transformedJson;
 	}
-
 	public String getPatientDetailsQueue() {
 		return patientDetailsQueue;
 	}
-
 	public void setPatientDetailsQueue(String patientDetailsQueue) {
 		this.patientDetailsQueue = patientDetailsQueue;
 	}
-
 	public String getPatientXlateTopic() {
 		return patientXlateTopic;
 	}
-
 	public void setPatientXlateTopic(String patientXlateTopic) {
 		this.patientXlateTopic = patientXlateTopic;
 	}
@@ -54,12 +49,10 @@ public class PatientTransformationRoute extends RouteBuilder {
 		.maximumRedeliveryDelay("1000")
 		.retryAttemptedLogLevel(LoggingLevel.ERROR);
 		
-
 		//Default Error Handler
 		onException(Exception.class)
 		.handled(true)
 		.log("Exception occurred: ${exception.message}");			
-		
 		
 		//Transformation Route
 		from(getPatientDetailsQueue())
@@ -71,5 +64,4 @@ public class PatientTransformationRoute extends RouteBuilder {
 		.to(getPatientXlateTopic())
 		.log(LoggingLevel.INFO,"Patient Data is sent to ActiveMQ topic");
 	}
-
 }

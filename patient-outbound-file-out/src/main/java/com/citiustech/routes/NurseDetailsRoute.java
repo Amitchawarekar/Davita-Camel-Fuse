@@ -22,8 +22,6 @@ public class NurseDetailsRoute extends RouteBuilder {
 	public void setPatientXlateTopic(String patientXlateTopic) {
 		this.patientXlateTopic = patientXlateTopic;
 	}
-
-
 	public String getNurseStatusDetailsDirect() {
 		return nurseStatusDetailsDirect;
 	}
@@ -31,30 +29,23 @@ public class NurseDetailsRoute extends RouteBuilder {
 	public void setNurseStatusDetailsDirect(String nurseStatusDetailsDirect) {
 		this.nurseStatusDetailsDirect = nurseStatusDetailsDirect;
 	}
-
-
 	public String getActiveNurseFilePath() {
 		return activeNurseFilePath;
 	}
-
 	public void setActiveNurseFilePath(String activeNurseFilePath) {
 		this.activeNurseFilePath = activeNurseFilePath;
 	}
-
 	public String getInactiveNurseFilePath() {
 		return inactiveNurseFilePath;
 	}
-
 	public void setInactiveNurseFilePath(String inactiveNurseFilePath) {
 		this.inactiveNurseFilePath = inactiveNurseFilePath;
 	}
-
 
 	@Override
 	public void configure() throws Exception {
 		
 		//Exception Handling
-		//error Handling
 		// ActiveMQ connection Exception
 		onException(ConnectionFailedException.class)
 		.handled(true)
@@ -74,7 +65,6 @@ public class NurseDetailsRoute extends RouteBuilder {
 		.handled(true)
 		.log("Exception occurred: ${exception.message}");
 		
-		
 		//Getting data from topic
 		from(getPatientXlateTopic())
 		.log(LoggingLevel.INFO,"Patient Data received from activeMQ topic")
@@ -92,10 +82,9 @@ public class NurseDetailsRoute extends RouteBuilder {
 		.marshal().json(JsonLibrary.Jackson)
 		.choice()
 	 	.when(header("PatientStatus").isEqualTo("Active"))
-	 			.to(getActiveNurseFilePath())
-	 		.otherwise()
-	 			.to(getInactiveNurseFilePath())
-	 			.end();
+	 	.to(getActiveNurseFilePath())
+	 	.otherwise()
+	 	.to(getInactiveNurseFilePath())
+	 	.end();
 	}
-
 }

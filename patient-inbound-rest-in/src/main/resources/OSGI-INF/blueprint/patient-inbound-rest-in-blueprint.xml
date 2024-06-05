@@ -6,7 +6,7 @@
         <cm:default-properties>
             <cm:property name="patientIdsSourceUri" value="file:src/main/resources/data/inbound?noop=true&amp;fileName=patientIds.txt"/>
             <cm:property name="httpUri" value="http://localhost:8081/patient/"/>
-            <cm:property name="AMQQueue" value="activemq:queue:patientDetailsQueue"/>
+            <cm:property name="amqQueue" value="activemq:queue:patientDetailsQueue"/>
             <cm:property name="patientReportDetailsQueue" value="direct:getPatientReportDetails"/>
             <cm:property name="allPatientsSqlQuery" value="sql:select * from Patients where patientId = :#id"/>
         </cm:default-properties>
@@ -21,7 +21,7 @@
     <bean class="com.citiustech.routes.GetPatientReportDetailsRoute" id="getPatientReportDetailsRoute">
         <property name="patientIdsSourceUri" value="${patientIdsSourceUri}"/>
         <property name="httpUri" value="${httpUri}"/>
-        <property name="AMQQueue" value="${AMQQueue}"/>
+        <property name="amqQueue" value="${amqQueue}"/>
     </bean>
     <bean class="com.citiustech.routes.InboundRestRoute" id="inboundRestRoute">
         <property name="patientReportDetailsQueue" value="${patientReportDetailsQueue}"/>

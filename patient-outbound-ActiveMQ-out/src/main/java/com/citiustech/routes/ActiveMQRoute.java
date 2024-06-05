@@ -20,27 +20,22 @@ public class ActiveMQRoute extends RouteBuilder {
 	public String getPatientXlateTopic() {
 		return patientXlateTopic;
 	}
-
 	public void setPatientXlateTopic(String patientXlateTopic) {
 		this.patientXlateTopic = patientXlateTopic;
 	}
-
 	public String getPatientDiagnosisDetailsTopic() {
 		return patientDiagnosisDetailsTopic;
 	}
-
 	public void setPatientDiagnosisDetailsTopic(String patientDiagnosisDetailsTopic) {
 		this.patientDiagnosisDetailsTopic = patientDiagnosisDetailsTopic;
 	}
-
 	public String getPatientDiagnosisBackupDirect() {
 		return patientDiagnosisBackupDirect;
 	}
-
 	public void setPatientDiagnosisBackupDirect(String patientDiagnosisBackupDirect) {
 		this.patientDiagnosisBackupDirect = patientDiagnosisBackupDirect;
 	}
-
+	
 	@Override
 	public void configure() throws Exception {
 

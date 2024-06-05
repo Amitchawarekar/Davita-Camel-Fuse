@@ -18,5 +18,4 @@ public class DiagnosisBackupProcessor implements Processor{
 		exchange.getIn().setBody(newBody, LinkedHashMap.class);
 //		exchange.getIn().setHeader("CamelFileName",PatientDemographic.get("PatientId"));		
 	}
-
 }

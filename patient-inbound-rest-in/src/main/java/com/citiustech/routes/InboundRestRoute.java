@@ -8,7 +8,6 @@ public class InboundRestRoute extends RouteBuilder {
 	public String patientReportDetailsQueue;
 	public String allPatientsSqlQuery;
 	
-	
 	public String getPatientReportDetailsQueue() {
 		return patientReportDetailsQueue;
 	}
@@ -36,10 +35,8 @@ public class InboundRestRoute extends RouteBuilder {
 		//Rest endpoint
 		rest("/patient").get("/{id}").to(getPatientReportDetailsQueue());
 		
-		
 		//Rest route for retrieving patient report details
 		from(getPatientReportDetailsQueue())
 		.to(getAllPatientsSqlQuery() + "?outputType=SelectOne");
 	}
-
 }
