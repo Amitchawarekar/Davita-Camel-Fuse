@@ -63,7 +63,6 @@ public class NurseDetailsRoute extends RouteBuilder {
 		.handled(true)
 		.log("Exception occurred: ${exception.message}");
 		
-		//Getting data from topic
 		from(getPatientXlateTopic())
 		.log(LoggingLevel.INFO,"Patient Data received from activeMQ topic")
 		.unmarshal().json(JsonLibrary.Jackson,LinkedHashMap.class)
@@ -71,18 +70,18 @@ public class NurseDetailsRoute extends RouteBuilder {
         .to(getNurseStatusDetailsDirect());
  
 		//Nurse Detail To File Route
-		from(getNurseStatusDetailsDirect())
+		from(getNurseStatusDetailsDirect()).routeId("NurseRoute")
 		.log(LoggingLevel.INFO,"Sending Active and Inactive Nurses to appropriate file route")
 		.setHeader("PatientStatus",simple("${body[PatientTreatmentDetails][DiagnosisDetails][PatientStatus]}"))
 		.setHeader("PatientId",simple("${body[PatientDemographicDetails][PatientId]}"))
 		.setHeader("CamelFileName",simple("NurseId-" +"${body[PatientTreatmentDetails][nursedetails][NurseId]}"))
 		.setBody(simple("${body[PatientTreatmentDetails][nursedetails]}"))
-		.marshal().json(JsonLibrary.Jackson)
+		.marshal().jacksonxml()
 		.choice()
 	 	.when(header("PatientStatus").isEqualTo("Active"))
 	 	.to(getActiveNurseFilePath())
 	 	.otherwise()
-	 	.to(getInactiveNurseFilePath())
+	 	.to(getInactiveNurseFilePath())	
 	 	.end();
 	}
 }

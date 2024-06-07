@@ -1,1 +1,1 @@
-{"NurseId":"N001","NurseName":"Nurse1","NurseGender":"Female","NurseEmail":"nurse1@example.com"}
+<LinkedHashMap><NurseId>N001</NurseId><NurseName>Nurse1</NurseName><NurseGender>Female</NurseGender><NurseEmail>nurse1@example.com</NurseEmail></LinkedHashMap>

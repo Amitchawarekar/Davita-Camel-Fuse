@@ -77,7 +77,7 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 		.log("Exception occurred: ${exception.message}");		
 		
 		//tokenizing and triming the incoming patientIds from the file 
-		from(getPatientIdsSourceUri())
+		from(getPatientIdsSourceUri()).routeId("PatientReportRoute")
 		.split(body().tokenize("\n"))
 		.setBody(simple("${body.trim()}"))
 		.process(new Processor() {
