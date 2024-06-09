@@ -74,13 +74,11 @@ public class InboundTestSuite extends CamelBlueprintTestSupport {
 			public void configure() throws Exception {
 				// TODO Auto-generated method stub
 				replaceFromWith("direct:in");
-				
 				weaveByToUri("http://localhost:8081/patient/").replace().to("mock:result");
 			}
 		});
 		
 		context.start();
-		
 		MockEndpoint mockResult = getMockEndpoint("mock:result");
 		String fileContent = "";
 		mockResult.expectedMessageCount(0);
@@ -115,5 +113,7 @@ public class InboundTestSuite extends CamelBlueprintTestSupport {
 	MockEndpoint.assertIsSatisfied(context);
 	context.stop();
 	}
+	
+	
 }
 
