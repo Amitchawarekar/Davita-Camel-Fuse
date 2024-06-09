@@ -13,6 +13,7 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 	public String patientIdsSourceUri;
 	public String httpUri;
 	public String amqQueue;
+	public String restApiDataReceivedWireTapDirect;
 	
 	public String getPatientIdsSourceUri() {
 		return patientIdsSourceUri;
@@ -31,6 +32,12 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 	}
 	public void setAmqQueue(String amqQueue) {
 		this.amqQueue = amqQueue;
+	}
+	public String getRestApiDataReceivedWireTapDirect() {
+		return restApiDataReceivedWireTapDirect;
+	}
+	public void setRestApiDataReceivedWireTapDirect(String restApiDataReceivedWireTapDirect) {
+		this.restApiDataReceivedWireTapDirect = restApiDataReceivedWireTapDirect;
 	}
 	@Override
 	public void configure() throws Exception {
@@ -92,10 +99,14 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 		.setHeader(Exchange.HTTP_PATH, simple("${header.patientId}"))
 		//Requesting the REST API for the data
 		.log(LoggingLevel.INFO,"Requesting :" + getHttpUri() + "${header.patientId}")
-		.log(LoggingLevel.INFO,"Patient Data received from rest api")
 		.to(getHttpUri())
+		.wireTap(getRestApiDataReceivedWireTapDirect())
 		//Sending it ActivemQ Server
 		.to(getAmqQueue())
 		.log(LoggingLevel.INFO,"Patient Data sent to ActiveMQ queue");
+		
+		
+		from(getRestApiDataReceivedWireTapDirect()) // Wiretap route
+		.log(LoggingLevel.INFO,"Patient Data received from rest api");
 	}
 }

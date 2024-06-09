@@ -9,6 +9,7 @@
             <cm:property name="amqQueue" value="activemq:queue:patientDetailsQueue"/>
             <cm:property name="patientReportDetailsQueue" value="direct:getPatientReportDetails"/>
             <cm:property name="allPatientsSqlQuery" value="sql:select * from Patients where patientId = :#id"/>
+            <cm:property name="restApiDataReceivedWireTapDirect" value="direct:RestApiDataReceived"/>
         </cm:default-properties>
     </cm:property-placeholder>
     <bean
@@ -22,6 +23,7 @@
         <property name="patientIdsSourceUri" value="${patientIdsSourceUri}"/>
         <property name="httpUri" value="${httpUri}"/>
         <property name="amqQueue" value="${amqQueue}"/>
+        <property name="restApiDataReceivedWireTapDirect" value="${restApiDataReceivedWireTapDirect}"/>
     </bean>
     <bean class="com.citiustech.routes.InboundRestRoute" id="inboundRestRoute">
         <property name="patientReportDetailsQueue" value="${patientReportDetailsQueue}"/>
