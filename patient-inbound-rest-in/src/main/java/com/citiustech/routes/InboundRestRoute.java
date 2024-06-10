@@ -21,7 +21,6 @@ public class InboundRestRoute extends RouteBuilder {
 
 	@Override
 	public void configure() throws Exception {
-		
 		// starts server and configure the server
 		restConfiguration() 
 				.component("spark-rest")

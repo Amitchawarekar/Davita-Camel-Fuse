@@ -26,7 +26,6 @@ public class InboundTestSuite extends CamelBlueprintTestSupport {
 			}
 		});
 		context.start();
- 
 //		By using exchange method we are sending 1001 as a body
 		Exchange exchnage = ExchangeBuilder.anExchange(context).withBody("1004").build();
 		template.send("direct:in", exchnage);
@@ -80,33 +79,31 @@ public class InboundTestSuite extends CamelBlueprintTestSupport {
 	public void testFileWithWhitespaces() throws Exception{
 		context.getRouteDefinition("PatientReportRoute").adviceWith(context, new AdviceWithRouteBuilder() {
 			
-			@Override
-			public void configure() throws Exception {
-				// TODO Auto-generated method stub
-				replaceFromWith("direct:in");
-				weaveByToUri("http://localhost:8081/patient/").replace().to("mock:result");
-				
+		@Override
+		public void configure() throws Exception {
+			// TODO Auto-generated method stub
+			replaceFromWith("direct:in");
+			weaveByToUri("http://localhost:8081/patient/").replace().to("mock:result");	
 			}
-	});
-	
-	context.start();
-	MockEndpoint mockResult = getMockEndpoint("mock:result");
-	String fileContent = "1001 \n1002 \n1003 \n1004 ";
-	mockResult.expectedBodiesReceived("1001","1002","1003","1004");
-	template.sendBody("direct:in",fileContent);
-	MockEndpoint.assertIsSatisfied(context);
-	context.stop();
+		});
+		context.start();
+		MockEndpoint mockResult = getMockEndpoint("mock:result");
+		String fileContent = "1001 \n1002 \n1003 \n1004 ";
+		mockResult.expectedBodiesReceived("1001","1002","1003","1004");
+		template.sendBody("direct:in",fileContent);
+		MockEndpoint.assertIsSatisfied(context);
+		context.stop();
 	}	
-	
 	
 	@Test
     public void testFileWithBlankLines() throws Exception {
         context.getRouteDefinition("PatientReportRoute").adviceWith(context, new AdviceWithRouteBuilder() {
-            @Override
-            public void configure() {
-            	replaceFromWith("direct:in");
-                weaveByToUri("http://localhost:8081/patient/").replace().to("mock:result");
-            }
+        
+        @Override
+        public void configure() {
+            replaceFromWith("direct:in");
+            weaveByToUri("http://localhost:8081/patient/").replace().to("mock:result");
+          }
         });
         context.start();
         MockEndpoint mockresult = getMockEndpoint("mock:result");
