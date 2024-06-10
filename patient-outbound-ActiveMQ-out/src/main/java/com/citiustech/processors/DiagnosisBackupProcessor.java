@@ -10,10 +10,13 @@ public class DiagnosisBackupProcessor implements Processor{
 		// TODO Auto-generated method stub
 		LinkedHashMap<String, Object> PatientDemographic=(LinkedHashMap<String, Object>) exchange.getIn().getBody(LinkedHashMap.class).get("PatientDemographicDetails");
 		LinkedHashMap<String, Object> PatientTreatment =(LinkedHashMap<String, Object>) exchange.getIn().getBody(LinkedHashMap.class).get("PatientTreatmentDetails");
+		
+		System.out.println(PatientDemographic);
 		LinkedHashMap<String,Object> newBody= new LinkedHashMap<>();
 		newBody.put("Patientid", PatientDemographic.get("PatientId"));
 		newBody.put("PatientDiagnosis", PatientTreatment.get("DiagnosisDetails"));
 		exchange.getIn().setBody(newBody, LinkedHashMap.class);
 //		exchange.getIn().setHeader("CamelFileName",PatientDemographic.get("PatientId"));		
-	}
+	
+}
 }

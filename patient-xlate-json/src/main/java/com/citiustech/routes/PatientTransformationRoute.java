@@ -6,6 +6,13 @@ import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.json.simple.JsonObject;
 import org.apache.camel.model.dataformat.JsonLibrary;
+
+import com.cititustech.processors.PatientDataTransformProcessor;
+import com.citiustech.models.DiagnosisDetails;
+import com.citiustech.models.Patient;
+import com.citiustech.models.PatientDemographicDetails;
+import com.citiustech.models.PatientInfo;
+import com.citiustech.models.PatientTreatmentDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -53,13 +60,23 @@ public class PatientTransformationRoute extends RouteBuilder {
 		.log("Exception occurred: ${exception.message}");			
 		
 		//Transformation Route
+//		from(getPatientDetailsQueue())
+//		.log(LoggingLevel.INFO,"Patient Data received from ActiveMQ queue - ${body}")
+//		.unmarshal().json(JsonLibrary.Jackson)
+//		.log(LoggingLevel.INFO,"Patient Data is Transformed")
+//		.setBody(simple(getTransformedJson()))
+//		.log("${body}")
+//		.to(getPatientXlateTopic())
+//		.log(LoggingLevel.INFO,"Patient Data is sent to ActiveMQ topic");
+//	
+		
 		from(getPatientDetailsQueue())
 		.log(LoggingLevel.INFO,"Patient Data received from ActiveMQ queue - ${body}")
-		.unmarshal().json(JsonLibrary.Jackson)
+		.unmarshal().json(JsonLibrary.Jackson,Patient.class)
 		.log(LoggingLevel.INFO,"Patient Data is Transformed")
-		.setBody(simple(getTransformedJson()))
-		.log("${body}")
+		.process(new PatientDataTransformProcessor())
+		.marshal().json(JsonLibrary.Jackson)
 		.to(getPatientXlateTopic())
-		.log(LoggingLevel.INFO,"Patient Data is sent to ActiveMQ topic");
+		.log("${body}");
 	}
 }

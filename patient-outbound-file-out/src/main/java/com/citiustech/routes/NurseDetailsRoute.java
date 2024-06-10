@@ -68,13 +68,14 @@ public class NurseDetailsRoute extends RouteBuilder {
 		.unmarshal().json(JsonLibrary.Jackson,LinkedHashMap.class)
 		.log(LoggingLevel.INFO,"Patient Data - ${body} ")
         .to(getNurseStatusDetailsDirect());
- 
+		
+		
 		//Nurse Detail To File Route
 		from(getNurseStatusDetailsDirect()).routeId("NurseRoute")
 		.log(LoggingLevel.INFO,"Sending Active and Inactive Nurses to appropriate file route")
-		.setHeader("PatientStatus",simple("${body[PatientTreatmentDetails][DiagnosisDetails][PatientStatus]}"))
-		.setHeader("PatientId",simple("${body[PatientDemographicDetails][PatientId]}"))
-		.setHeader("CamelFileName",simple("NurseId-" +"${body[PatientTreatmentDetails][nursedetails][NurseId]}"))
+		.setHeader("PatientStatus",simple("${body[patientTreatmentDetails][diagnosisDetails][patientStatus]}"))
+		.setHeader("PatientId",simple("${body[patientDemographicDetails][PatientId]}"))
+		.setHeader("CamelFileName",simple("NurseId-" +"${body[patientTreatmentDetails][nurseDetails][nurseId]}"))
 		.setBody(simple("${body[PatientTreatmentDetails][nursedetails]}"))
 		.marshal().jacksonxml()
 		.choice()

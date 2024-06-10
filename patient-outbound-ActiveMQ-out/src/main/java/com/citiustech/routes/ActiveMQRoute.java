@@ -6,6 +6,7 @@ import org.apache.activemq.ConnectionFailedException;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
+
 import com.citiustech.processors.DiagnosisBackupProcessor;
 
 public class ActiveMQRoute extends RouteBuilder {
@@ -51,8 +52,9 @@ public class ActiveMQRoute extends RouteBuilder {
 
 		// Route to send Diagnosis data to topic as backup
 		from(getPatientXlateTopic())
+		.unmarshal().json(JsonLibrary.Jackson,LinkedHashMap.class)
 		.log(LoggingLevel.INFO,"Patient Data received from ActiveMQ topic")
-		.unmarshal().json(JsonLibrary.Jackson, LinkedHashMap.class)
+		.log("${body}")
 		.log("Patient Data received : ${body} ")
 		.to(getPatientDiagnosisBackupDirect());
 

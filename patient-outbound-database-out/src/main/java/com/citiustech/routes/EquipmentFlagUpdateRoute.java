@@ -69,8 +69,8 @@ public class EquipmentFlagUpdateRoute  extends RouteBuilder{
 
 		//database Update route for changing Equipment Status
 		from(getDatabaseEquipmentFlagUpdateDirect())
-		.setHeader("PatientStatus",simple("${body[PatientTreatmentDetails][DiagnosisDetails][PatientStatus]}"))
-		.setHeader("PatientId",simple("${body[PatientDemographicDetails][PatientId]}"))
+		.setHeader("PatientStatus",simple("${body[patientTreatmentDetails][diagnosisDetails][patientStatus]}"))
+		.setHeader("PatientId",simple("${body[patientDemographicDetails][PatientId]}"))
 		.choice()
 		.when(header("PatientStatus").isEqualTo("Active"))
 		.to(getEquipmentflagActiveSqlQuery())
