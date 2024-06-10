@@ -6,7 +6,6 @@ import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.json.simple.JsonObject;
 import org.apache.camel.model.dataformat.JsonLibrary;
-
 import com.cititustech.processors.PatientDataTransformProcessor;
 import com.citiustech.models.DiagnosisDetails;
 import com.citiustech.models.Patient;
@@ -68,8 +67,7 @@ public class PatientTransformationRoute extends RouteBuilder {
 //		.log("${body}")
 //		.to(getPatientXlateTopic())
 //		.log(LoggingLevel.INFO,"Patient Data is sent to ActiveMQ topic");
-//	
-		
+
 		from(getPatientDetailsQueue())
 		.log(LoggingLevel.INFO,"Patient Data received from ActiveMQ queue - ${body}")
 		.unmarshal().json(JsonLibrary.Jackson,Patient.class)

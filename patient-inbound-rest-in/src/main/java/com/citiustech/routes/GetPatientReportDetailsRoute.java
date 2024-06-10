@@ -109,7 +109,6 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 		.to(getAmqQueue())
 		.log(LoggingLevel.INFO,"Patient Data sent to ActiveMQ queue");
 		
-		
 		from(getRestApiDataReceivedWireTapDirect()) // Wiretap route
 		.log(LoggingLevel.INFO,"Patient Data received from rest api");
 	}

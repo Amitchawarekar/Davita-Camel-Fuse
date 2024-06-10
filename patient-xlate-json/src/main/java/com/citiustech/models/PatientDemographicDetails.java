@@ -1,7 +1,5 @@
 package com.citiustech.models;
-
 import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PatientDemographicDetails {
@@ -76,7 +74,4 @@ public class PatientDemographicDetails {
 				+ ", patientLastName=" + patientLastName + ", patientAge=" + patientAge + ", patientDOB=" + patientDOB
 				+ ", patientGender=" + patientGender + ", patientEmail=" + patientEmail + "]";
 	}
-
-	
-    
 }

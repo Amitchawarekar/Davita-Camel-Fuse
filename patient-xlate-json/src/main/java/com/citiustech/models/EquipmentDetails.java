@@ -1,5 +1,4 @@
 package com.citiustech.models;
-
 import java.io.Serializable;
 
 public class EquipmentDetails{
@@ -11,15 +10,12 @@ public class EquipmentDetails{
     public String getEquipmentName() {
         return EquipmentName;
     }
-
     public void setEquipmentName(String equipmentName) {
         EquipmentName = equipmentName;
     }
-
     public String getEquipmentStatus() {
         return EquipmentStatus;
     }
-
     public void setEquipmentStatus(String equipmentStatus) {
         EquipmentStatus = equipmentStatus;
     }

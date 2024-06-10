@@ -1,5 +1,4 @@
 package com.citiustech.models;
-
 import java.io.Serializable;
 
 public class DiagnosisDetails {
@@ -12,23 +11,18 @@ public class DiagnosisDetails {
     public String getDiagnosisDisease() {
         return DiagnosisDisease;
     }
-
     public void setDiagnosisDisease(String diagnosisDisease) {
         DiagnosisDisease = diagnosisDisease;
     }
-
     public String getDiagnosisSymptoms() {
         return DiagnosisSymptoms;
     }
-
     public void setDiagnosisSymptoms(String diagnosisSymptoms) {
         DiagnosisSymptoms = diagnosisSymptoms;
     }
-
     public String getPatientStatus() {
         return PatientStatus;
     }
-
     public void setPatientStatus(String patientStatus) {
         PatientStatus = patientStatus;
     }

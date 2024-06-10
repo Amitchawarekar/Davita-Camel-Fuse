@@ -13,15 +13,12 @@ public class PatientInfo {
     public PatientDemographicDetails getPatientDemographicDetails() {
         return PatientDemographicDetails;
     }
-
     public void setPatientDemographicDetails(PatientDemographicDetails patientDemographicDetails) {
         PatientDemographicDetails = patientDemographicDetails;
     }
-
     public PatientTreatmentDetails getPatientTreatmentDetails() {
         return PatientTreatmentDetails;
     }
-
     public void setPatientTreatmentDetails(PatientTreatmentDetails patientTreatmentDetails) {
         PatientTreatmentDetails = patientTreatmentDetails;
     }

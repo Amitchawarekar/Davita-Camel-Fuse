@@ -1,8 +1,6 @@
 package com.cititustech.processors;
-
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-
 import com.citiustech.models.DiagnosisDetails;
 import com.citiustech.models.EquipmentDetails;
 import com.citiustech.models.NurseDetails;
@@ -19,9 +17,6 @@ public class PatientDataTransformProcessor implements Processor {
 		Patient patient = exchange.getIn().getBody(Patient.class);
 		
 		exchange.getIn().setBody(patient);
-		System.out.println("patient" +patient);
-		
-//		PatientTreatmentDetails pt = new PatientTreatmentDetails();
 		
 		PatientDemographicDetails patientDemographicDetails = new PatientDemographicDetails();
 		patientDemographicDetails.setPatientId(patient.getPatientId());
@@ -31,9 +26,7 @@ public class PatientDataTransformProcessor implements Processor {
 		patientDemographicDetails.setPatientDOB(patient.getPatientDOB());
 		patientDemographicDetails.setPatientGender(patient.getPatientGender());
 		patientDemographicDetails.setPatientEmail(patient.getPatientEmail());
-		
-		System.out.println(patientDemographicDetails);
-		
+				
 		DiagnosisDetails diagnosisDetails = new DiagnosisDetails();
 		diagnosisDetails.setDiagnosisDisease(patient.getDiagnosisDisease());
 		diagnosisDetails.setDiagnosisSymptoms(patient.getDiagnosisSymptoms());
@@ -59,9 +52,7 @@ public class PatientDataTransformProcessor implements Processor {
 		PatientInfo patientInfo = new PatientInfo();
 		patientInfo.setPatientDemographicDetails(patientDemographicDetails);
 		patientInfo.setPatientTreatmentDetails(patientTreatmentDetails);
-		
-		System.out.println(patientInfo.getPatientTreatmentDetails().getDiagnosisDetails().getPatientStatus());
-		
+				
 		exchange.getIn().setBody(patientInfo);
 		
 	}

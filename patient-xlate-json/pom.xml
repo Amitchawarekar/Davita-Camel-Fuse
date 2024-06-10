@@ -88,9 +88,9 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>CrudOperationsREST-Assgnment2</Bundle-SymbolicName>
+						<Bundle-SymbolicName>patient-xlate-json</Bundle-SymbolicName>
 						<Bundle-Name>Camel Content-Based Router Example
-							[CrudOperationsREST-Assgnment2]</Bundle-Name>
+							[patient-xlate-json]</Bundle-Name>
 					</instructions>
 				</configuration>
 			</plugin>
