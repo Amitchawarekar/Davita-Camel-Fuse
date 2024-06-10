@@ -21,11 +21,6 @@ public class InboundTestSuite extends CamelBlueprintTestSupport {
 			public void configure() throws Exception {
 //				To replace the route input with a new endpoint
 				replaceFromWith("direct:in");
-//				Manipulates the route at the node IDs that matches the pattern.
-//				weaveById("patientreportqueue")
-//				   .replace()
-//				   .setBody(constant("1001")).to("mock:result");
- 
 //				also replacing original endPoint with mock end point
 				weaveByToUri("activemq:queue:patientDetailsQueue").replace().to("mock:result");
 			}
@@ -35,11 +30,9 @@ public class InboundTestSuite extends CamelBlueprintTestSupport {
 //		By using exchange method we are sending 1001 as a body
 		Exchange exchnage = ExchangeBuilder.anExchange(context).withBody("1004").build();
 		template.send("direct:in", exchnage);
-
 		MockEndpoint mock = getMockEndpoint("mock:result");
 		mock.expectedMessageCount(1);
 		assertMockEndpointsSatisfied();
- 
 	}
 	
 	@Test
@@ -53,11 +46,8 @@ public class InboundTestSuite extends CamelBlueprintTestSupport {
 				weaveByToUri("http://localhost:8081/patient/").replace().to("mock:result");
 			}
 		});
-		
 		context.start();
-		
 		MockEndpoint mockResult = getMockEndpoint("mock:result");
-		
 		String fileContent = "1001\n1002\n1003\n1004";
 		mockResult.expectedBodiesReceived("1001","1002","1003","1004");
 		System.out.println(mockResult.toString());
@@ -77,15 +67,12 @@ public class InboundTestSuite extends CamelBlueprintTestSupport {
 				weaveByToUri("http://localhost:8081/patient/").replace().to("mock:result");
 			}
 		});
-		
 		context.start();
 		MockEndpoint mockResult = getMockEndpoint("mock:result");
 		String fileContent = "";
 		mockResult.expectedMessageCount(0);
-		
 		template.sendBody("direct:in",fileContent);
 		MockEndpoint.assertIsSatisfied(context);
-		
 		context.stop();
 	}
 	
@@ -100,20 +87,34 @@ public class InboundTestSuite extends CamelBlueprintTestSupport {
 				weaveByToUri("http://localhost:8081/patient/").replace().to("mock:result");
 				
 			}
-		
 	});
 	
 	context.start();
-	
 	MockEndpoint mockResult = getMockEndpoint("mock:result");
-	
 	String fileContent = "1001 \n1002 \n1003 \n1004 ";
 	mockResult.expectedBodiesReceived("1001","1002","1003","1004");
 	template.sendBody("direct:in",fileContent);
 	MockEndpoint.assertIsSatisfied(context);
 	context.stop();
-	}
+	}	
 	
 	
+	@Test
+    public void testFileWithBlankLines() throws Exception {
+        context.getRouteDefinition("PatientReportRoute").adviceWith(context, new AdviceWithRouteBuilder() {
+            @Override
+            public void configure() {
+            	replaceFromWith("direct:in");
+                weaveByToUri("http://localhost:8081/patient/").replace().to("mock:result");
+            }
+        });
+        context.start();
+        MockEndpoint mockresult = getMockEndpoint("mock:result");
+        String fileContent = "1001\n\n\n\n\n1002";
+        mockresult.expectedBodiesReceived("1001", "1002");
+        template.sendBody("direct:in", fileContent);
+        MockEndpoint.assertIsSatisfied(context);
+        context.stop();
+    }
 }
 

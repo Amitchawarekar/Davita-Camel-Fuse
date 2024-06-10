@@ -87,6 +87,10 @@ public class GetPatientReportDetailsRoute extends RouteBuilder {
 		from(getPatientIdsSourceUri()).routeId("PatientReportRoute")
 		.split(body().tokenize("\n"))
 		.setBody(simple("${body.trim()}"))
+		.choice()
+		.when(body().isEqualTo(""))
+		.log("Empty Line in file")
+		.otherwise()
 		.process(new Processor() {
 			@Override
 			public void process(Exchange exchange) throws Exception {
