@@ -47,8 +47,8 @@ public class InboundTestSuite extends CamelBlueprintTestSupport {
 		});
 		context.start();
 		MockEndpoint mockResult = getMockEndpoint("mock:result");
-		String fileContent = "1001\n1002\n1003\n1004";
-		mockResult.expectedBodiesReceived("1001","1002","1003","1004");
+		String fileContent = "1001\n1002\n1003\n1004\n1005\n1006\1007\n1008\1009\1010";
+		mockResult.expectedBodiesReceived("1001","1002","1003","1004","1005","1006","1007","1008","1009","1010");
 		System.out.println(mockResult.toString());
 		template.sendBody("direct:in",fileContent);
 		MockEndpoint.assertIsSatisfied(context);
@@ -88,8 +88,8 @@ public class InboundTestSuite extends CamelBlueprintTestSupport {
 		});
 		context.start();
 		MockEndpoint mockResult = getMockEndpoint("mock:result");
-		String fileContent = "1001 \n1002 \n1003 \n1004 ";
-		mockResult.expectedBodiesReceived("1001","1002","1003","1004");
+		String fileContent = "1001 \n1002 \n1003 \n1004 \n1005 \n1006 \n1007 \n1008 \n1009 \n1010";
+		mockResult.expectedBodiesReceived("1001","1002","1003","1004","1005","1006","1007","1008","1009","1010");
 		template.sendBody("direct:in",fileContent);
 		MockEndpoint.assertIsSatisfied(context);
 		context.stop();
