@@ -7,7 +7,7 @@
             <cm:property name="patientXlateTopic" value="activemq:topic:patientXlateTopic"/>
             <cm:property name="databaseEquipmentFlagUpdateDirect" value="direct:DatabaseEquipmentFlagUpdate"/>
             <cm:property name="equipmentflagActiveSqlQuery" value="sql: update patients set EquipmentStatus= &quot;Inuse&quot; where PatientId= :#PatientId"/>
-            <cm:property name="equipmentflagInactiveSqlQuery" value="sql: update patients set EquipmentStatus= &quot;Free&quot; where PatientId= :#PatientId"/>
+            <cm:property name="equipmentflagInactiveSqlQuery" value="sql: update patients set EquipmentStatus= &quot;Available&quot; where PatientId= :#PatientId"/>
         </cm:default-properties>
     </cm:property-placeholder>
     <bean

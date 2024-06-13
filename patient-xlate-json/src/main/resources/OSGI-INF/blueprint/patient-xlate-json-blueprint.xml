@@ -4,13 +4,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="              http://www.osgi.org/xmlns/blueprint/v1.0.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd              http://camel.apache.org/schema/blueprint https://camel.apache.org/schema/blueprint/camel-blueprint-2.23.3.xsd">
     <cm:property-placeholder id="myblueprint.placeholder" persistent-id="camel.blueprint">
         <cm:default-properties>
-            <cm:property name="transformedJson" value="{&quot;PatientDemographicDetails&quot;: {&quot;PatientId&quot;: &quot;${body[PatientId]}&quot;, &quot;PatientFirstName&quot;: &quot;${body[PatientFirstName]}&quot;, &quot;PatientLastName&quot;: &quot;${body[PatientLastName]}&quot;, &quot;PatientAge&quot;: ${body[PatientAge]}, &quot;Patientdob&quot;: &quot;${body[PatientDOB]}&quot;, &quot;PatientGender&quot;: &quot;${body[PatientGender]}&quot;, &quot;PatientEmail&quot;: &quot;${body[PatientEmail]}&quot;}, &quot;PatientTreatmentDetails&quot;: {&quot;DiagnosisDetails&quot;: {&quot;DiagnosisDisease&quot;: &quot;${body[DiagnosisDisease]}&quot;, &quot;DiagnosisSymptoms&quot;: &quot;${body[DiagnosisSymptoms]}&quot;, &quot;PatientStatus&quot;: &quot;${body[PatientStatus]}&quot;}, &quot;Equipment&quot;: {&quot;EquipmentName&quot;: &quot;${body[EquipmentName]}&quot;, &quot;EquipmentStatus&quot;: &quot;${body[EquipmentStatus]}&quot;}, &quot;nursedetails&quot;: {&quot;NurseId&quot;: &quot;${body[NurseId]}&quot;, &quot;NurseName&quot;: &quot;${body[NurseName]}&quot;, &quot;NurseGender&quot;: &quot;${body[NurseGender]}&quot;, &quot;NurseEmail&quot;: &quot;${body[NurseEmail]}&quot;}}}"/>
             <cm:property name="patientDetailsQueue" value="activemq:queue:patientDetailsQueue"/>
             <cm:property name="patientXlateTopic" value="activemq:topic:patientXlateTopic"/>
         </cm:default-properties>
     </cm:property-placeholder>
     <bean class="com.citiustech.routes.PatientTransformationRoute" id="patientTransformationRoute">
-        <property name="transformedJson" value="${transformedJson}"/>
         <property name="patientDetailsQueue" value="${patientDetailsQueue}"/>
         <property name="patientXlateTopic" value="${patientXlateTopic}"/>
     </bean>
